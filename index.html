@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light-gray">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Order Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── THEMES ── */
+  [data-theme="light-gray"] {
+    --bg: #f0f2f5; --surface: #ffffff; --surface2: #e8eaed;
+    --border: #d1d5db; --text: #111827; --text-muted: #6b7280;
+    --gold: #d97706; --gold-dim: rgba(217,119,6,0.1); --gold-border: rgba(217,119,6,0.35);
+    --green: #16a34a; --red: #dc2626; --blue: #2563eb;
+    --input-bg: #f9fafb; --shadow: 0 1px 3px rgba(0,0,0,0.08);
+    --hero-bg: linear-gradient(135deg,#1e1e2e 0%,#2d1f4e 50%,#1a1a2e 100%);
+    --hero-text: #ffffff; --hero-sub: rgba(255,255,255,0.7);
+    --toggle-bg: #e5e7eb;
+  }
+  [data-theme="white"] {
+    --bg: #ffffff; --surface: #ffffff; --surface2: #f9fafb;
+    --border: #e5e7eb; --text: #111827; --text-muted: #6b7280;
+    --gold: #d97706; --gold-dim: rgba(217,119,6,0.08); --gold-border: rgba(217,119,6,0.3);
+    --green: #16a34a; --red: #dc2626; --blue: #2563eb;
+    --input-bg: #ffffff; --shadow: 0 1px 4px rgba(0,0,0,0.06);
+    --hero-bg: linear-gradient(135deg,#1e1e2e 0%,#2d1f4e 50%,#1a1a2e 100%);
+    --hero-text: #ffffff; --hero-sub: rgba(255,255,255,0.7);
+    --toggle-bg: #f3f4f6;
+  }
+  [data-theme="dark"] {
+    --bg: #0a0a0a; --surface: #141414; --surface2: #1e1e1e;
+    --border: #2a2a2a; --text: #f0f0f0; --text-muted: #888;
+    --gold: #f4a623; --gold-dim: rgba(244,166,35,0.12); --gold-border: rgba(244,166,35,0.35);
+    --green: #22c55e; --red: #ef4444; --blue: #63b3ed;
+    --input-bg: #141414; --shadow: 0 2px 8px rgba(0,0,0,0.3);
+    --hero-bg: linear-gradient(135deg,#0a0a0a 0%,#111 50%,#0f0a00 100%);
+    --hero-text: #f0f0f0; --hero-sub: #888;
+    --toggle-bg: #1e1e1e;
+  }
+
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 0 0 100px; transition: background 0.3s, color 0.3s; }
+
+  /* ── THEME SWITCHER ── */
+  .theme-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow); }
+  .theme-bar span { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .theme-btns { display: flex; gap: 6px; }
+  .theme-btn { padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--toggle-bg); color: var(--text-muted); transition: all 0.2s; }
+  .theme-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .theme-btn.active { background: var(--gold); border-color: var(--gold); color: #000; }
+
+  /* ── HERO ── */
+  .hero { background: var(--hero-bg); padding: 56px 24px 44px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:500px; height:500px; background:radial-gradient(circle,rgba(244,166,35,0.1) 0%,transparent 70%); pointer-events:none; }
+  .hero-badge { display:inline-block; background:rgba(244,166,35,0.15); border:1px solid rgba(244,166,35,0.4); color:#f4a623; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:6px 16px; border-radius:999px; margin-bottom:20px; }
+  .hero h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,5vw,44px); font-weight:700; line-height:1.15; margin-bottom:12px; color: var(--hero-text); }
+  .hero h1 span { color:#f4a623; }
+  .hero p { color: var(--hero-sub); font-size:15px; max-width:480px; margin:0 auto; line-height:1.6; }
+
+  /* ── LAYOUT ── */
+  .pricing-section { max-width:860px; margin:40px auto 0; padding:0 24px; }
+  .form-wrap { max-width:860px; margin:0 auto; padding:0 24px; }
+  .section-label { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+
+  /* ── PLAN CARDS ── */
+  .pricing-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+  @media(max-width:600px){ .pricing-cards{ grid-template-columns:1fr; } }
+  .plan-card { background:var(--surface); border:2px solid var(--border); border-radius:14px; padding:24px; cursor:pointer; transition:all 0.2s; position:relative; box-shadow:var(--shadow); }
+  .plan-card:hover { border-color:var(--gold-border); transform:translateY(-1px); }
+  .plan-card.selected { border-color:var(--gold); background:var(--gold-dim); }
+  .plan-name { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; margin-bottom:4px; color:var(--text); }
+  .plan-price { font-size:28px; font-weight:700; color:var(--gold); margin-bottom:12px; }
+  .plan-price span { font-size:14px; font-weight:400; color:var(--text-muted); }
+  .plan-card ul { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .plan-card ul li { font-size:13px; color:var(--text-muted); display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+  .plan-card ul li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; margin-top:1px; }
+  .plan-card ul li.warn::before { content:'⚡'; color:var(--gold); }
+  .plan-radio { position:absolute; top:20px; right:20px; width:20px; height:20px; border-radius:50%; border:2px solid var(--border); background:var(--bg); transition:all 0.2s; }
+  .plan-card.selected .plan-radio { border-color:var(--gold); background:var(--gold); box-shadow:0 0 0 4px var(--gold-dim); }
+
+  /* ── ADDONS ── */
+  .addons-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-bottom:8px; }
+  .addon-item { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px; cursor:pointer; transition:all 0.2s; display:flex; align-items:flex-start; gap:12px; box-shadow:var(--shadow); }
+  .addon-item:hover { border-color:var(--gold-border); }
+  .addon-item.selected { border-color:var(--gold); background:var(--gold-dim); }
+  .addon-item.hidden { display:none; }
+  .addon-check { width:18px; height:18px; border-radius:4px; border:2px solid var(--border); background:var(--bg); flex-shrink:0; margin-top:2px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#000; }
+  .addon-item.selected .addon-check { background:var(--gold); border-color:var(--gold); }
+  .addon-name { font-size:13px; font-weight:600; margin-bottom:2px; color:var(--text); }
+  .addon-price { font-size:12px; color:var(--gold); }
+  .addon-sub { font-size:11px; color:var(--text-muted); margin-top:3px; line-height:1.4; }
+
+  /* ── FORM SECTIONS ── */
+  .form-section { margin-top:40px; }
+  .form-section-header { display:flex; align-items:center; gap:14px; margin-bottom:22px; padding-bottom:14px; border-bottom:2px solid var(--border); }
+  .section-num { width:36px; height:36px; background:var(--gold); color:#000; font-weight:700; font-size:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .form-section-header h2 { font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:700; color:var(--text); }
+  .form-section-header p { font-size:13px; color:var(--text-muted); margin-top:2px; }
+
+  /* ── FIELDS ── */
+  .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:600px){ .field-grid{ grid-template-columns:1fr; } }
+  .field { display:flex; flex-direction:column; gap:7px; }
+  .field label { font-size:13px; font-weight:600; color:var(--text-muted); }
+  .field label .req { color:var(--gold); margin-left:2px; }
+
+  input[type=text], input[type=email], input[type=tel], input[type=url], textarea, select {
+    background:var(--input-bg); border:1.5px solid var(--border); border-radius:10px;
+    color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
+    padding:11px 15px; width:100%; transition:border-color 0.2s, box-shadow 0.2s; outline:none; appearance:none;
+  }
+  input:focus, textarea:focus, select:focus { border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
+  input::placeholder, textarea::placeholder { color:var(--text-muted); opacity:0.7; }
+  textarea { min-height:96px; resize:vertical; line-height:1.6; }
+
+  /* ── RADIO / CHECK ── */
+  .radio-group { display:flex; flex-direction:column; gap:9px; }
+  .radio-option { display:flex; align-items:flex-start; gap:12px; background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:12px 15px; cursor:pointer; transition:all 0.2s; font-size:14px; line-height:1.5; box-shadow:var(--shadow); }
+  .radio-option:hover { border-color:var(--gold-border); }
+  .radio-option.selected { border-color:var(--gold); background:var(--gold-dim); }
+  .radio-dot { width:18px; height:18px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; transition:all 0.2s; margin-top:2px; background:var(--input-bg); }
+  .radio-option.selected .radio-dot { border-color:var(--gold); background:var(--gold); box-shadow:0 0 0 3px var(--gold-dim); }
+
+  .section-check-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:12px; }
+  @media(max-width:500px){ .section-check-grid{ grid-template-columns:1fr; } }
+  .check-option { display:flex; align-items:center; gap:12px; background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:11px 15px; cursor:pointer; transition:all 0.2s; font-size:14px; box-shadow:var(--shadow); }
+  .check-option:hover { border-color:var(--gold-border); }
+  .check-option.selected { border-color:var(--gold); background:var(--gold-dim); }
+  .check-box { width:18px; height:18px; border-radius:4px; border:2px solid var(--border); flex-shrink:0; transition:all 0.2s; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#000; background:var(--input-bg); }
+  .check-option.selected .check-box { background:var(--gold); border-color:var(--gold); }
+
+  /* ── COUNTER BAR ── */
+  .counter-bar { display:flex; align-items:center; gap:10px; padding:11px 15px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; font-size:13px; margin-top:12px; flex-wrap:wrap; }
+  .cb-label { color:var(--text-muted); }
+  .cb-count { font-weight:700; color:var(--text); }
+  .cb-charge { color:var(--red); font-weight:600; margin-left:auto; }
+  .cb-ok { color:var(--green); font-weight:600; margin-left:auto; }
+
+  /* ── CUSTOM SECTIONS ── */
+  .btn-add-more { display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1.5px dashed var(--gold); border-radius:10px; color:var(--gold); font-size:13px; font-weight:600; padding:10px 16px; cursor:pointer; transition:all 0.2s; margin-top:10px; }
+  .btn-add-more:hover { background:var(--gold-dim); }
+  .custom-section-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .custom-section-row input { flex:1; margin-top:0; }
+  .btn-remove-custom { background:none; border:none; color:var(--red); cursor:pointer; font-size:18px; line-height:1; flex-shrink:0; padding:4px; }
+
+  /* ── COLORS ── */
+  .color-picker-group { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  @media(max-width:500px){ .color-picker-group{ grid-template-columns:1fr; } }
+  .color-picker-item { display:flex; flex-direction:column; gap:7px; }
+  .color-picker-item label { font-size:12px; color:var(--text-muted); font-weight:600; }
+  .color-input-wrap { display:flex; align-items:center; gap:10px; background:var(--surface); border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; transition:border-color 0.2s; }
+  .color-input-wrap:focus-within { border-color:var(--gold); }
+  input[type=color] { width:32px; height:32px; border:none; border-radius:6px; padding:0; cursor:pointer; background:none; flex-shrink:0; }
+  .color-hex { font-size:13px; font-family:'Space Grotesk',monospace; color:var(--text); background:none; border:none; outline:none; width:80px; padding:0; }
+
+  /* ── UPLOAD ── */
+  .upload-zone { background:var(--surface); border:2px dashed var(--border); border-radius:12px; padding:28px; text-align:center; cursor:pointer; transition:all 0.2s; position:relative; }
+  .upload-zone:hover { border-color:var(--gold); background:var(--gold-dim); }
+  .upload-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; padding:0; border:none; background:none; }
+  .upload-icon { font-size:30px; margin-bottom:8px; }
+  .upload-zone p { font-size:14px; color:var(--text-muted); }
+  .upload-zone p strong { color:var(--text); }
+  .upload-zone small { font-size:12px; color:var(--text-muted); }
+  .file-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .file-preview-item { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 12px; font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:8px; }
+  .remove-file { color:var(--red); cursor:pointer; font-weight:700; background:none; border:none; font-size:14px; line-height:1; }
+
+  /* ── SECTION BOXES ── */
+  .section-box { background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:18px; margin-bottom:10px; box-shadow:var(--shadow); }
+  .section-box h4 { font-size:14px; font-weight:600; margin-bottom:10px; color:var(--gold); }
+
+  /* ── INFO BOXES ── */
+  .info-box { padding:13px 15px; border-radius:10px; font-size:13px; line-height:1.6; margin-top:10px; }
+  .info-box.gold { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--text-muted); }
+  .info-box.gold strong { color:var(--gold); }
+  .info-box.green { background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.25); color:var(--text-muted); }
+  .info-box.green strong { color:var(--green); }
+  .info-box.blue { background:rgba(37,99,235,0.07); border:1px solid rgba(37,99,235,0.2); color:var(--text-muted); }
+  .info-box.blue strong { color:var(--blue); }
+
+  .delivery-box { padding:13px 15px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:10px; font-size:13px; margin-bottom:18px; display:none; line-height:1.6; color:var(--text-muted); }
+  .delivery-box strong { color:var(--gold); }
+
+  /* ── PRICE SUMMARY ── */
+  .price-summary { position:fixed; bottom:24px; right:24px; background:var(--surface); border:1.5px solid var(--gold); border-radius:14px; padding:16px 20px; min-width:230px; box-shadow:0 8px 32px rgba(0,0,0,0.15); z-index:100; }
+  @media(max-width:500px){ .price-summary{ left:12px; right:12px; min-width:0; bottom:12px; } }
+  .price-summary-label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .price-summary-amount { font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; color:var(--gold); }
+  .price-breakdown { margin-top:10px; font-size:12px; color:var(--text-muted); line-height:1.9; border-top:1px solid var(--border); padding-top:10px; }
+  .note-line { color:var(--blue); font-style:italic; }
+
+  /* ── SUBMIT ── */
+  .submit-section { max-width:860px; margin:40px auto 0; padding:0 24px; }
+  .submit-note { background:var(--surface); border:1.5px solid var(--border); border-radius:12px; padding:18px; font-size:13px; color:var(--text-muted); line-height:1.7; margin-bottom:18px; box-shadow:var(--shadow); }
+  .submit-note strong { color:var(--text); }
+  .btn-submit { width:100%; background:var(--gold); color:#000; font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; border:none; border-radius:12px; padding:18px; cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; }
+  .btn-submit:hover { filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 8px 24px var(--gold-dim); }
+
+  /* ── SUCCESS ── */
+  .success-screen { display:none; text-align:center; padding:80px 24px; max-width:500px; margin:0 auto; }
+  .success-icon { font-size:64px; margin-bottom:24px; }
+  .success-screen h2 { font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:700; margin-bottom:12px; color:var(--text); }
+  .success-screen p { color:var(--text-muted); line-height:1.7; }
+
+  /* ── UTILS ── */
+  .conditional { display:none; }
+  .conditional.visible { display:block; }
+  .mt-8{margin-top:8px;} .mt-12{margin-top:12px;} .mt-16{margin-top:16px;} .mt-24{margin-top:24px;}
+  .note-text { font-size:12px; color:var(--text-muted); margin-top:5px; font-style:italic; }
+  .opt-label strong { display:block; font-size:14px; color:var(--text); }
+  .opt-label small { font-size:12px; color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<!-- THEME SWITCHER -->
+<div class="theme-bar">
+  <span>Theme:</span>
+  <div class="theme-btns">
+    <button class="theme-btn" id="btn-light-gray" onclick="setTheme('light-gray')">☁️ Light Gray</button>
+    <button class="theme-btn" id="btn-white" onclick="setTheme('white')">⬜ White</button>
+    <button class="theme-btn" id="btn-dark" onclick="setTheme('dark')">🌙 Dark</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Website Order Form</div>
+  <h1>Let's Build Your<br><span>Perfect Website</span></h1>
+  <p>Fill this form once. We handle everything. Your website will be ready fast — no calls needed.</p>
+</div>
+
+<div id="mainForm">
+
+  <!-- PACKAGES -->
+  <div class="pricing-section">
+    <div class="section-label">Step 1 — Choose Your Package</div>
+    <div class="pricing-cards">
+      <div class="plan-card" id="plan-starter" onclick="selectPlan('starter')">
+        <div class="plan-radio"></div>
+        <div class="plan-name">⭐ Starter</div>
+        <div class="plan-price">LKR 10,000 <span>/ site</span></div>
+        <ul>
+          <li>Single scrollable page</li>
+          <li>Up to 5 sections — free</li>
+          <li>AI content writing — free</li>
+          <li class="warn">6th+ section = +LKR 1,500 each</li>
+          <li>Minimal images, mobile friendly</li>
+          <li>⏱️ Delivered within 48 hours</li>
+        </ul>
+      </div>
+      <div class="plan-card" id="plan-business" onclick="selectPlan('business')">
+        <div class="plan-radio"></div>
+        <div class="plan-name">🚀 Business</div>
+        <div class="plan-price">LKR 20,000 <span>/ site</span></div>
+        <ul>
+          <li>Up to 4 separate pages — included</li>
+          <li>Up to 4 sections per page</li>
+          <li class="warn">5th page = +LKR 3,000</li>
+          <li class="warn">Extra sections = +LKR 1,500 each</li>
+          <li>Mobile friendly</li>
+          <li>⏱️ Minimum 72 hours delivery</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="addons-wrap" style="display:none;">
+      <div class="section-label" style="margin-top:28px;">Add-ons — Business Package</div>
+      <div class="addons-grid">
+        <div class="addon-item" id="addon-content" onclick="toggleAddon('content',1500)">
+          <div class="addon-check" id="check-content"></div>
+          <div>
+            <div class="addon-name">AI Written Content</div>
+            <div class="addon-price">+LKR 1,500</div>
+            <div class="addon-sub">Writing content across 4 pages takes more work</div>
+          </div>
+        </div>
+        <div class="addon-item" id="addon-extrapage" onclick="toggleAddon('extrapage',3000)">
+          <div class="addon-check" id="check-extrapage"></div>
+          <div>
+            <div class="addon-name">5th Page</div>
+            <div class="addon-price">+LKR 3,000</div>
+            <div class="addon-sub">Add one extra page beyond the 4 included</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-wrap">
+
+    <!-- 1. BUSINESS -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">1</div>
+        <div><h2>About Your Business</h2><p>Basic details so we know who you are</p></div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" id="fullName" placeholder="e.g. Kamal Perera"></div>
+        <div class="field"><label>Business Name <span class="req">*</span></label><input type="text" id="businessName" placeholder="e.g. Kamal's Cafe"></div>
+        <div class="field"><label>Business Type / Industry <span class="req">*</span></label><input type="text" id="businessType" placeholder="e.g. Restaurant, Salon, Freelancer"></div>
+        <div class="field"><label>Location / City <span class="req">*</span></label><input type="text" id="location" placeholder="e.g. Colombo, Sri Lanka"></div>
+        <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="email" placeholder="you@example.com"></div>
+        <div class="field"><label>WhatsApp Number <span class="req">*</span></label><input type="tel" id="whatsapp" placeholder="+94 77 123 4567"></div>
+      </div>
+      <div class="field mt-16"><label>Short Business Description <span class="req">*</span></label><textarea id="businessDesc" placeholder="Tell us in 2–3 sentences what your business does, who you serve, and what makes you special..."></textarea></div>
+    </div>
+
+    <!-- 2. GOALS -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">2</div>
+        <div><h2>Website Goals</h2><p>What do you want this website to do?</p></div>
+      </div>
+      <div class="field"><label>Main Purpose of the Website <span class="req">*</span></label><input type="text" id="websitePurpose" placeholder="e.g. Show my services, get customer inquiries, promote my brand"></div>
+      <div class="field mt-16"><label>Who is Your Target Audience? <span class="req">*</span></label><input type="text" id="targetAudience" placeholder="e.g. Local families in Colombo, young professionals, small businesses"></div>
+      <div class="field mt-16">
+        <label>Do you have an existing website?</label>
+        <div class="radio-group mt-8">
+          <div class="radio-option" onclick="selectRadio('existingSite','no',this)"><div class="radio-dot"></div>No, this is a new website</div>
+          <div class="radio-option" onclick="selectRadio('existingSite','yes',this)"><div class="radio-dot"></div>Yes, I have one</div>
+        </div>
+        <div class="conditional mt-8" id="cond-existingSite-yes">
+          <input type="url" id="existingSiteUrl" placeholder="https://yourwebsite.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PAGES & SECTIONS -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">3</div>
+        <div><h2>Pages & Sections</h2><p>What content should be on your website?</p></div>
+      </div>
+      <div class="field">
+        <label>Select the sections you want <span class="req">*</span></label>
+        <p class="note-text" id="section-help-text">Please select a package above first.</p>
+        <div id="section-counter-bar" style="display:none;" class="counter-bar">
+          <span class="cb-label">Selected:</span>
+          <span class="cb-count" id="cb-count">0</span>
+          <span id="cb-free-label" class="cb-label"></span>
+          <span id="cb-status"></span>
+        </div>
+        <div class="section-check-grid">
+          <div class="check-option" onclick="toggleSection('home',this)"><div class="check-box" id="chk-home"></div>🏠 Home / Hero Banner</div>
+          <div class="check-option" onclick="toggleSection('about',this)"><div class="check-box" id="chk-about"></div>👤 About Us</div>
+          <div class="check-option" onclick="toggleSection('services',this)"><div class="check-box" id="chk-services"></div>🛠️ Services / What We Offer</div>
+          <div class="check-option" onclick="toggleSection('portfolio',this)"><div class="check-box" id="chk-portfolio"></div>🖼️ Portfolio / Gallery</div>
+          <div class="check-option" onclick="toggleSection('pricing',this)"><div class="check-box" id="chk-pricing"></div>💰 Pricing</div>
+          <div class="check-option" onclick="toggleSection('testimonials',this)"><div class="check-box" id="chk-testimonials"></div>⭐ Testimonials</div>
+          <div class="check-option" onclick="toggleSection('contact',this)"><div class="check-box" id="chk-contact"></div>📞 Contact Us</div>
+        </div>
+        <div id="custom-sections-wrap" style="margin-top:12px;">
+          <div id="custom-sections-list"></div>
+          <button class="btn-add-more" onclick="addCustomSection()">➕ Add a Custom Section</button>
+        </div>
+      </div>
+      <div id="section-details" class="mt-24"></div>
+    </div>
+
+    <!-- 4. DESIGN -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">4</div>
+        <div><h2>Design & Colors</h2><p>Tell us the look and feel you want</p></div>
+      </div>
+      <div class="field">
+        <label>Your 3 Main Brand Colors <span class="req">*</span></label>
+        <p class="note-text">Click the color box to open the picker, or type a hex code directly.</p>
+        <div class="color-picker-group mt-12">
+          <div class="color-picker-item">
+            <label>Primary Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="color1" value="#1a1a2e" oninput="updateHex('color1','hex1')">
+              <input type="text" class="color-hex" id="hex1" value="#1A1A2E" oninput="updateColor('hex1','color1')" maxlength="7">
+            </div>
+          </div>
+          <div class="color-picker-item">
+            <label>Secondary Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="color2" value="#f4a623" oninput="updateHex('color2','hex2')">
+              <input type="text" class="color-hex" id="hex2" value="#F4A623" oninput="updateColor('hex2','color2')" maxlength="7">
+            </div>
+          </div>
+          <div class="color-picker-item">
+            <label>Accent Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="color3" value="#ffffff" oninput="updateHex('color3','hex3')">
+              <input type="text" class="color-hex" id="hex3" value="#FFFFFF" oninput="updateColor('hex3','color3')" maxlength="7">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field mt-24">
+        <label>Any colors you DON'T want?</label>
+        <input type="text" id="noColors" placeholder="e.g. Pink, bright orange, neon green" class="mt-8">
+      </div>
+      <div class="field mt-24">
+        <label>Website Style <span class="req">*</span></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px;">
+          <div class="radio-option" onclick="selectRadio('style','minimal',this)"><div class="radio-dot"></div>🤍 Clean & Minimal</div>
+          <div class="radio-option" onclick="selectRadio('style','bold',this)"><div class="radio-dot"></div>⚡ Bold & Modern</div>
+          <div class="radio-option" onclick="selectRadio('style','elegant',this)"><div class="radio-dot"></div>👑 Elegant & Luxury</div>
+          <div class="radio-option" onclick="selectRadio('style','playful',this)"><div class="radio-dot"></div>🎨 Playful & Colorful</div>
+          <div class="radio-option" onclick="selectRadio('style','corporate',this)"><div class="radio-dot"></div>💼 Corporate & Professional</div>
+        </div>
+      </div>
+      <div class="field mt-24">
+        <label>Reference Website (a site you like the look of)</label>
+        <input type="url" id="refSite" placeholder="https://example.com — style inspiration only" class="mt-8">
+      </div>
+    </div>
+
+    <!-- 5. CONTENT -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">5</div>
+        <div><h2>Content & Text</h2><p>The words that will appear on your website</p></div>
+      </div>
+      <div class="field">
+        <label>Do you have your own written content ready? <span class="req">*</span></label>
+        <div class="radio-group mt-8">
+          <div class="radio-option" onclick="selectRadio('content','yes',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>Yes — I will provide all the text</strong><small>You'll fill in the section descriptions in Step 3</small></div>
+          </div>
+          <div class="radio-option" onclick="selectRadio('content','ai',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>No — Please write content using AI</strong><small id="ai-content-sub">We'll write simple content based on your business details</small></div>
+          </div>
+          <div class="radio-option" onclick="selectRadio('content','partial',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>Partly — I have some, need help with the rest</strong><small>Tell us what you have and what needs writing</small></div>
+          </div>
+        </div>
+        <div class="conditional mt-12" id="cond-content-partial">
+          <textarea id="partialContent" placeholder="Tell us what content you have and what you need help writing..."></textarea>
+        </div>
+        <div class="info-box green mt-12" id="ai-notice-starter" style="display:none;">
+          ✅ <strong>Included free</strong> for Starter — we'll write simple AI content for your single page at no extra charge.
+        </div>
+        <div class="info-box gold mt-12" id="ai-notice-business" style="display:none;">
+          ⚡ <strong>+LKR 1,500</strong> for Business — writing content across 4 pages takes more work. Select the AI Content add-on above.
+        </div>
+      </div>
+      <div class="field mt-24">
+        <label>Your Business Tagline or Slogan</label>
+        <input type="text" id="tagline" placeholder="e.g. Drink, Smile, Repeat! — leave blank if you don't have one" class="mt-8">
+      </div>
+      <div class="field mt-24">
+        <label>Your Main Services or Products <span class="req">*</span></label>
+        <textarea id="services" placeholder="List each service/product on a new line with a short description and price.&#10;&#10;Example:&#10;Hair Cut — Professional haircut — LKR 500&#10;Hair Color — Full color treatment — LKR 2,500"></textarea>
+      </div>
+    </div>
+
+    <!-- 6. IMAGES -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">6</div>
+        <div><h2>Images & Logo</h2><p>Quality over quantity — keep it simple</p></div>
+      </div>
+      <div class="field">
+        <label>Upload Your Logo <span class="req">*</span></label>
+        <p class="note-text">PNG with transparent background is best. JPG also works.</p>
+        <div class="upload-zone mt-8">
+          <input type="file" id="logoFile" accept="image/*" onchange="handleFileUpload('logoFile','logo-preview',1)">
+          <div class="upload-icon">🖼️</div>
+          <p><strong>Click to upload your logo</strong></p>
+          <small>PNG, JPG — Max 5MB</small>
+        </div>
+        <div class="file-preview" id="logo-preview"></div>
+      </div>
+      <div class="field mt-24">
+        <label>Upload Up to 3 Images</label>
+        <p class="note-text">Products, office, team, or anything representing your business.</p>
+        <div class="upload-zone mt-8">
+          <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleFileUpload('imageFiles','images-preview',3)">
+          <div class="upload-icon">📷</div>
+          <p><strong>Click to upload images</strong></p>
+          <small>PNG, JPG — Up to 3 images — Max 5MB each</small>
+        </div>
+        <div class="file-preview" id="images-preview"></div>
+      </div>
+    </div>
+
+    <!-- 7. SOCIAL -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">7</div>
+        <div><h2>Social Media Links</h2><p>We'll add these to your website footer</p></div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>Facebook</label><input type="url" id="facebook" placeholder="https://facebook.com/yourpage"></div>
+        <div class="field"><label>Instagram</label><input type="url" id="instagram" placeholder="https://instagram.com/yourhandle"></div>
+        <div class="field"><label>YouTube</label><input type="url" id="youtube" placeholder="https://youtube.com/yourchannel"></div>
+        <div class="field"><label>TikTok</label><input type="url" id="tiktok" placeholder="https://tiktok.com/@yourhandle"></div>
+        <div class="field"><label>WhatsApp Business</label><input type="tel" id="waLink" placeholder="+94 77 123 4567"></div>
+        <div class="field"><label>Other Link</label><input type="url" id="otherLink" placeholder="LinkedIn, Telegram, etc."></div>
+      </div>
+    </div>
+
+    <!-- 8. DOMAIN & HOSTING -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">8</div>
+        <div><h2>Domain & Hosting</h2><p>Where will your website live?</p></div>
+      </div>
+      <div class="field">
+        <label>Do you have a domain name? <span class="req">*</span></label>
+        <p class="note-text">e.g. myshop.lk, mybusiness.com</p>
+        <div class="radio-group mt-8">
+          <div class="radio-option" onclick="selectRadio('domain','yes',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>Yes — I already have a domain</strong><small>We'll use it for your website</small></div>
+          </div>
+          <div class="radio-option" onclick="selectRadio('domain','no',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>No — I need to buy one</strong><small>Price varies by type (.lk, .com, .net etc.) — we'll quote you separately</small></div>
+          </div>
+        </div>
+        <div class="conditional mt-8" id="cond-domain-yes">
+          <input type="text" id="domainName" placeholder="e.g. myshop.lk or mybusiness.com">
+        </div>
+        <div class="conditional" id="cond-domain-no">
+          <div class="info-box blue mt-8">💬 <strong>We'll contact you</strong> with the domain price based on the extension you want. No payment needed now.</div>
+          <input type="text" id="domainWanted" placeholder="What domain name do you want? e.g. myshop.lk" class="mt-8">
+        </div>
+      </div>
+      <div class="field mt-24">
+        <label>Do you have web hosting? <span class="req">*</span></label>
+        <div class="radio-group mt-8">
+          <div class="radio-option" onclick="selectRadio('hostingQ','yes',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>Yes — I have hosting</strong><small>We'll deliver the files, you handle uploading</small></div>
+          </div>
+          <div class="radio-option" onclick="selectRadio('hostingQ','no',this)"><div class="radio-dot"></div>
+            <div class="opt-label"><strong>No — I need hosting</strong><small>We'll set it up for you — cost depends on plan, quoted separately</small></div>
+          </div>
+        </div>
+        <div class="conditional mt-8" id="cond-hostingQ-yes">
+          <input type="text" id="hostingProvider" placeholder="Which hosting provider? e.g. Dialog, SLT, Hostinger, GoDaddy...">
+        </div>
+        <div class="conditional" id="cond-hostingQ-no">
+          <div class="info-box blue mt-8">💬 <strong>We'll contact you</strong> with hosting options and pricing based on your site size and budget.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. FINAL -->
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">9</div>
+        <div><h2>Final Notes</h2><p>Almost done!</p></div>
+      </div>
+      <div class="delivery-box" id="deliveryBox"></div>
+      <div class="field">
+        <label>Any special deadline or timing notes?</label>
+        <input type="text" id="deadline" placeholder="e.g. Need it by 30th June, ASAP, no rush..." class="mt-8">
+      </div>
+      <div class="field mt-16">
+        <label>Any special requests or extra notes?</label>
+        <textarea id="notes" placeholder="Special features, things to avoid, inspiration, anything you want us to know..."></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="submit-section">
+    <div class="submit-note">
+      <strong>⚠️ Please note:</strong> Future updates after delivery are <strong>not included</strong> and will be charged at <strong>LKR 1,500 per edit</strong>. Domain and hosting costs (if needed) will be quoted separately before any payment is made. By submitting you agree to these terms.
+    </div>
+    <button class="btn-submit" onclick="submitForm()">✅ Submit My Website Order</button>
+  </div>
+
+</div>
+
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">🎉</div>
+  <h2>Order Received!</h2>
+  <p>We've got all your details. We'll contact you on WhatsApp within <strong>24 hours</strong> to confirm and get started.</p>
+  <p style="margin-top:16px;color:var(--text-muted);">Your website is on the way. 🚀</p>
+</div>
+
+<div class="price-summary" id="priceSummary">
+  <div class="price-summary-label">Estimated Total</div>
+  <div class="price-summary-amount" id="totalAmount">LKR 0</div>
+  <div class="price-breakdown" id="priceBreakdown">← Select a package to start</div>
+</div>
+
+<script>
+  // ── THEME ─────────────────────────────────────────────────────────────────────
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btn-' + t).classList.add('active');
+    localStorage.setItem('form-theme', t);
+  }
+  // Load saved theme, default = light-gray
+  const savedTheme = localStorage.getItem('form-theme') || 'light-gray';
+  setTheme(savedTheme);
+
+  // ── STATE ─────────────────────────────────────────────────────────────────────
+  let selectedPlan = null, selectedAddons = {}, radioSelections = {};
+  let selectedSections = [], sectionDescriptions = {};
+  let customSectionCount = 0, customSectionLabels = {};
+  const planPrices = { starter:10000, business:20000 };
+  const addonPrices = { content:1500, extrapage:3000 };
+  const FREE_SECTIONS = { starter:5, business:4 };
+  const EXTRA_SEC_PRICE = 1500;
+  const builtinLabels = { home:'🏠 Home / Hero Banner', about:'👤 About Us', services:'🛠️ Services / What We Offer', portfolio:'🖼️ Portfolio / Gallery', pricing:'💰 Pricing', testimonials:'⭐ Testimonials', contact:'📞 Contact Us' };
+  const getSectionLabel = k => builtinLabels[k] || ('➕ ' + (customSectionLabels[k] || 'Custom Section'));
+
+  // ── PLAN ──────────────────────────────────────────────────────────────────────
+  function selectPlan(plan) {
+    selectedPlan = plan;
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('plan-' + plan).classList.add('selected');
+    document.getElementById('addons-wrap').style.display = plan === 'business' ? 'block' : 'none';
+    if (plan === 'starter') {
+      ['content','extrapage'].forEach(k => { if (selectedAddons[k]) { delete selectedAddons[k]; document.getElementById('addon-'+k)?.classList.remove('selected'); const c = document.getElementById('check-'+k); if(c) c.textContent=''; } });
+    }
+    document.getElementById('section-help-text').textContent = plan === 'starter'
+      ? '⭐ Starter: 5 sections free. Extra sections beyond 5 are +LKR 1,500 each.'
+      : '🚀 Business: Up to 4 sections per page. Extra sections are +LKR 1,500 each.';
+    const aiSel = radioSelections['content'];
+    document.getElementById('ai-notice-starter').style.display = (plan==='starter' && aiSel==='ai') ? 'block' : 'none';
+    document.getElementById('ai-notice-business').style.display = (plan==='business' && aiSel==='ai') ? 'block' : 'none';
+    const db = document.getElementById('deliveryBox');
+    db.innerHTML = plan === 'starter'
+      ? '⏱️ <strong>Delivery:</strong> Starter sites are delivered within <strong>48 hours</strong> from order confirmation.'
+      : '⏱️ <strong>Delivery:</strong> Business sites have a <strong>minimum 72-hour</strong> delivery time. Complex projects may take longer.';
+    db.style.display = 'block';
+    updateSectionCounter(); updatePrice();
+  }
+
+  // ── ADDON ─────────────────────────────────────────────────────────────────────
+  function toggleAddon(key, price) {
+    if (selectedAddons[key]) { delete selectedAddons[key]; document.getElementById('addon-'+key).classList.remove('selected'); document.getElementById('check-'+key).textContent=''; }
+    else { selectedAddons[key]=price; document.getElementById('addon-'+key).classList.add('selected'); document.getElementById('check-'+key).textContent='✓'; }
+    updatePrice();
+  }
+
+  // ── PRICE ─────────────────────────────────────────────────────────────────────
+  function updatePrice() {
+    let total=0, lines=[], notes=[];
+    if (selectedPlan) { total+=planPrices[selectedPlan]; lines.push((selectedPlan==='starter'?'⭐ Starter':'🚀 Business')+' — LKR '+planPrices[selectedPlan].toLocaleString()); }
+    if (selectedPlan) { const extra=Math.max(0,selectedSections.length-FREE_SECTIONS[selectedPlan]); if(extra>0){const c=extra*EXTRA_SEC_PRICE;total+=c;lines.push('Extra '+extra+' section'+(extra>1?'s':'')+' — LKR '+c.toLocaleString());} }
+    Object.entries(selectedAddons).forEach(([k,v])=>{total+=v;const n={content:'AI Content',extrapage:'5th Page'};lines.push((n[k]||k)+' — LKR '+v.toLocaleString());});
+    if (radioSelections['domain']==='no') notes.push('+ Domain cost (quoted separately)');
+    if (radioSelections['hostingQ']==='no') notes.push('+ Hosting cost (quoted separately)');
+    document.getElementById('totalAmount').textContent = total>0?'LKR '+total.toLocaleString():'LKR 0';
+    let html = lines.length ? lines.join('<br>') : '← Select a package to start';
+    if (notes.length) html += '<br>' + notes.map(n=>'<span class="note-line">'+n+'</span>').join('<br>');
+    document.getElementById('priceBreakdown').innerHTML = html;
+  }
+
+  // ── RADIO ─────────────────────────────────────────────────────────────────────
+  function selectRadio(group, value, el) {
+    radioSelections[group]=value;
+    (el.closest('.field')||el.closest('.form-section')).querySelectorAll('.radio-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    document.querySelectorAll('[id^="cond-'+group+'-"]').forEach(c=>c.classList.remove('visible'));
+    document.getElementById('cond-'+group+'-'+value)?.classList.add('visible');
+    if (group==='content') {
+      document.getElementById('ai-notice-starter').style.display=(selectedPlan==='starter'&&value==='ai')?'block':'none';
+      document.getElementById('ai-notice-business').style.display=(selectedPlan==='business'&&value==='ai')?'block':'none';
+    }
+    updatePrice();
+  }
+
+  // ── SECTION COUNTER ───────────────────────────────────────────────────────────
+  function updateSectionCounter() {
+    const bar=document.getElementById('section-counter-bar');
+    if (!selectedPlan){bar.style.display='none';return;}
+    bar.style.display='flex';
+    const free=FREE_SECTIONS[selectedPlan], count=selectedSections.length, extra=Math.max(0,count-free);
+    document.getElementById('cb-count').textContent=count;
+    document.getElementById('cb-free-label').textContent='/ '+free+' free';
+    const s=document.getElementById('cb-status');
+    if(extra>0){s.className='cb-charge';s.textContent='+'+extra+' extra = LKR '+(extra*EXTRA_SEC_PRICE).toLocaleString();}
+    else{s.className='cb-ok';s.textContent=count===0?'':'✓ Within free limit';}
+    updatePrice();
+  }
+
+  // ── SECTIONS ──────────────────────────────────────────────────────────────────
+  function saveDescriptions(){document.querySelectorAll('[id^="section-desc-"]').forEach(ta=>{sectionDescriptions[ta.id.replace('section-desc-','')]=ta.value;});}
+  function toggleSection(key,el){
+    saveDescriptions();
+    const idx=selectedSections.indexOf(key), chk=document.getElementById('chk-'+key);
+    if(idx===-1){selectedSections.push(key);el.classList.add('selected');chk.textContent='✓';}
+    else{selectedSections.splice(idx,1);el.classList.remove('selected');chk.textContent='';}
+    updateSectionCounter(); renderSectionDetails();
+  }
+  function addCustomSection(){
+    const key='custom-'+customSectionCount++;
+    const row=document.createElement('div'); row.className='custom-section-row'; row.id='custom-row-'+key;
+    row.innerHTML=`<input type="text" placeholder="Section name — e.g. FAQ, Our Team, Awards..." id="custom-label-${key}" oninput="updateCustomLabel('${key}')" style="margin-top:0;"><button class="btn-remove-custom" onclick="removeCustomSection('${key}')">✕</button>`;
+    document.getElementById('custom-sections-list').appendChild(row);
+    setTimeout(()=>{customSectionLabels[key]='Custom Section';saveDescriptions();selectedSections.push(key);updateSectionCounter();renderSectionDetails();},10);
+  }
+  function updateCustomLabel(key){const v=document.getElementById('custom-label-'+key)?.value||'Custom Section';customSectionLabels[key]=v;const h=document.getElementById('sbh-'+key);if(h)h.textContent='➕ '+v;}
+  function removeCustomSection(key){saveDescriptions();const i=selectedSections.indexOf(key);if(i!==-1)selectedSections.splice(i,1);document.getElementById('custom-row-'+key)?.remove();delete customSectionLabels[key];delete sectionDescriptions[key];updateSectionCounter();renderSectionDetails();}
+  function renderSectionDetails(){
+    const c=document.getElementById('section-details'); c.innerHTML='';
+    if(!selectedSections.length) return;
+    const h=document.createElement('div'); h.style.cssText='font-size:13px;color:var(--text-muted);margin-bottom:14px;'; h.textContent='For each section, briefly describe what should go in it:'; c.appendChild(h);
+    selectedSections.forEach(key=>{const box=document.createElement('div');box.className='section-box';box.innerHTML=`<h4 id="sbh-${key}">${getSectionLabel(key)}</h4><textarea id="section-desc-${key}" placeholder="What should go in this section? List items, text, features, etc...">${sectionDescriptions[key]||''}</textarea>`;c.appendChild(box);});
+  }
+
+  // ── COLORS ────────────────────────────────────────────────────────────────────
+  function updateHex(cid,hid){document.getElementById(hid).value=document.getElementById(cid).value.toUpperCase();}
+  function updateColor(hid,cid){const v=document.getElementById(hid).value;if(/^#[0-9A-Fa-f]{6}$/.test(v))document.getElementById(cid).value=v;}
+
+  // ── FILES ─────────────────────────────────────────────────────────────────────
+  function handleFileUpload(inputId,previewId,max){
+    const files=Array.from(document.getElementById(inputId).files).slice(0,max);
+    const preview=document.getElementById(previewId); preview.innerHTML='';
+    files.forEach(f=>{const item=document.createElement('div');item.className='file-preview-item';item.innerHTML=`📎 ${f.name} <button class="remove-file" onclick="this.closest('.file-preview-item').remove()">✕</button>`;preview.appendChild(item);});
+  }
+
+  // ── SUBMIT ────────────────────────────────────────────────────────────────────
+  function submitForm(){
+    if(!selectedPlan){alert('Please select a package — Starter or Business.');return;}
+    if(!selectedSections.length){alert('Please select at least one section for your website.');return;}
+    if(!radioSelections['style']){alert('Please select a website style in Section 4.');return;}
+    if(!radioSelections['content']){alert('Please answer the content question in Section 5.');return;}
+    const req=[['fullName','Full Name'],['businessName','Business Name'],['businessType','Business Type'],['location','Location'],['email','Email'],['whatsapp','WhatsApp Number'],['businessDesc','Business Description'],['websitePurpose','Website Purpose'],['targetAudience','Target Audience'],['services','Services / Products']];
+    const missing=[];
+    req.forEach(([id,label])=>{const el=document.getElementById(id);if(!el?.value?.trim()){missing.push(label);if(el)el.style.borderColor='var(--red)';}else if(el)el.style.borderColor='';});
+    if(missing.length){alert('Please fill in: '+missing.join(', '));const fid=req.find(([id])=>!document.getElementById(id)?.value?.trim())?.[0];document.getElementById(fid)?.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    document.getElementById('mainForm').style.display='none';
+    document.getElementById('priceSummary').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  updatePrice();
+</script>
+</body>
+</html>
