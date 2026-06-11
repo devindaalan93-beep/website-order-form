@@ -228,7 +228,7 @@
 <div class="hero">
   <div class="hero-badge">Website Order Form</div>
   <h1>Let's Build Your<br><span>Perfect Website</span></h1>
-  <p>Fill this form once. We handle everything. Your website will be ready fast — no calls needed.</p>
+  <p>Choose your package, fill in your details, and we handle everything from there.</p>
 </div>
 
 <div id="mainForm">
@@ -236,44 +236,74 @@
   <!-- PACKAGES -->
   <div class="pricing-section">
     <div class="section-label">Step 1 — Choose Your Package</div>
-    <div class="pricing-cards">
-      <div class="plan-card" id="plan-starter" onclick="selectPlan('starter')">
+    <div class="pricing-cards" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="plan-card" id="plan-quicksite" onclick="selectPlan('quicksite')">
         <div class="plan-radio"></div>
-        <div class="plan-name">⭐ Starter</div>
+        <div class="plan-name">QuickSite</div>
         <div class="plan-price">LKR 10,000 <span>/ site</span></div>
         <ul>
           <li>Single scrollable page</li>
-          <li>Up to 5 sections — free</li>
-          <li>AI content writing — free</li>
-          <li class="warn">6th+ section = +LKR 1,500 each</li>
-          <li>Minimal images, mobile friendly</li>
-          <li>⏱️ Delivered within 48 hours</li>
+          <li>Up to 5 sections — included</li>
+          <li class="warn">6th+ section = +LKR 1,500</li>
+          <li>Mobile friendly</li>
+          <li>⏱️ Delivered in 48 hours</li>
         </ul>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:14px;line-height:1.5;">Perfect for personal brands, freelancers and small shops. One clean page, fast delivery.</p>
       </div>
-      <div class="plan-card" id="plan-business" onclick="selectPlan('business')">
+      <div class="plan-card" id="plan-bizsite" onclick="selectPlan('bizsite')">
         <div class="plan-radio"></div>
-        <div class="plan-name">🚀 Business</div>
+        <div class="plan-name">BizSite</div>
         <div class="plan-price">LKR 20,000 <span>/ site</span></div>
         <ul>
-          <li>Up to 4 separate pages — included</li>
+          <li>Up to 4 separate pages</li>
           <li>Up to 4 sections per page</li>
           <li class="warn">5th page = +LKR 3,000</li>
-          <li class="warn">Extra sections = +LKR 1,500 each</li>
+          <li class="warn">Extra sections = +LKR 1,500</li>
           <li>Mobile friendly</li>
-          <li>⏱️ Minimum 72 hours delivery</li>
+          <li>⏱️ Minimum 72 hours</li>
         </ul>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:14px;line-height:1.5;">For growing businesses that need more. Multi-page, professional, built to impress.</p>
+      </div>
+      <div class="plan-card" id="plan-prosite" onclick="selectPlan('prosite')">
+        <div class="plan-radio"></div>
+        <div class="plan-name">ProSite</div>
+        <div class="plan-price">LKR 35,000+ <span>/ quoted</span></div>
+        <ul>
+          <li>Fully custom design</li>
+          <li>Complex features & systems</li>
+          <li>Unique animations & layouts</li>
+          <li>Dedicated project meeting</li>
+          <li>⏱️ Timeline discussed personally</li>
+        </ul>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:14px;line-height:1.5;">Big projects built around your vision. We'll contact you to arrange a call or meeting.</p>
       </div>
     </div>
 
+    <!-- Add-ons — only for QuickSite and BizSite -->
+    <div id="addons-all-wrap" style="display:none;margin-top:28px;">
+      <div class="section-label">Add-ons — Available for All Packages</div>
+      <div class="addons-grid">
+        <div class="addon-item" id="addon-animation" onclick="toggleAddon('animation',2000)">
+          <div class="addon-check" id="check-animation"></div>
+          <div>
+            <div class="addon-name">✨ 3D Background Animation</div>
+            <div class="addon-price">+LKR 2,000</div>
+            <div class="addon-sub">Animated 3D background — particles, waves, or floating shapes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add-ons for BizSite only -->
     <div id="addons-wrap" style="display:none;">
-      <div class="section-label" style="margin-top:28px;">Add-ons — Business Package</div>
+      <div class="section-label" style="margin-top:20px;">Add-ons — BizSite Only</div>
       <div class="addons-grid">
         <div class="addon-item" id="addon-content" onclick="toggleAddon('content',1500)">
           <div class="addon-check" id="check-content"></div>
           <div>
-            <div class="addon-name">AI Written Content</div>
+            <div class="addon-name">Content Writing</div>
             <div class="addon-price">+LKR 1,500</div>
-            <div class="addon-sub">Writing content across 4 pages takes more work</div>
+            <div class="addon-sub">We write the content for your pages</div>
           </div>
         </div>
         <div class="addon-item" id="addon-extrapage" onclick="toggleAddon('extrapage',3000)">
@@ -288,7 +318,46 @@
     </div>
   </div>
 
-  <div class="form-wrap">
+  <!-- PROSITE CONTACT ONLY FORM -->
+  <div class="form-wrap" id="prosite-form" style="display:none;">
+    <div class="info-box blue mt-24" style="font-size:14px;line-height:1.7;padding:20px;">
+      🤝 <strong>Great choice!</strong> ProSite is our fully custom package for bigger projects. Just leave your contact details below and we'll reach out on WhatsApp to arrange a call or meeting — online or in person — and discuss everything from there.
+    </div>
+    <div class="form-section">
+      <div class="form-section-header">
+        <div class="section-num">1</div>
+        <div><h2>Your Contact Details</h2><p>That's all we need for now</p></div>
+      </div>
+      <div class="field-grid">
+        <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" id="pro-fullName" placeholder="e.g. Kamal Perera"></div>
+        <div class="field"><label>Business Name <span class="req">*</span></label><input type="text" id="pro-businessName" placeholder="e.g. Kamal's Cafe"></div>
+        <div class="field"><label>WhatsApp Number <span class="req">*</span></label><input type="tel" id="pro-whatsapp" placeholder="+94 77 123 4567"></div>
+        <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="pro-email" placeholder="you@example.com"></div>
+      </div>
+      <div class="field mt-16">
+        <label>Tell us briefly about your project</label>
+        <textarea id="pro-notes" placeholder="What kind of website do you need? Any features, ideas, or inspiration you have in mind? Even a rough idea is fine — we'll discuss everything on the call..."></textarea>
+      </div>
+      <div class="field mt-16">
+        <label>Preferred way to meet?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px;">
+          <div class="radio-option" onclick="selectRadio('meetType','online',this)"><div class="radio-dot"></div>💻 Online (Zoom / Google Meet)</div>
+          <div class="radio-option" onclick="selectRadio('meetType','physical',this)"><div class="radio-dot"></div>🤝 In Person — Colombo area</div>
+          <div class="radio-option" onclick="selectRadio('meetType','whatsapp',this)"><div class="radio-dot"></div>📱 WhatsApp Call is fine</div>
+          <div class="radio-option" onclick="selectRadio('meetType','any',this)"><div class="radio-dot"></div>✅ Any — whatever works</div>
+        </div>
+      </div>
+    </div>
+    <div class="submit-section" style="padding:0;">
+      <div class="submit-note">
+        <strong>What happens next?</strong> We'll contact you on WhatsApp within <strong>24 hours</strong> to confirm and arrange your meeting. No payment needed at this stage.
+      </div>
+      <button class="btn-submit" onclick="submitProSite()">📩 Send My Details — We'll Be in Touch</button>
+    </div>
+  </div>
+
+  <!-- MAIN FORM — QuickSite & BizSite -->
+  <div class="form-wrap" id="main-detail-form" style="display:none;">
 
     <!-- 1. BUSINESS -->
     <div class="form-section">
@@ -342,6 +411,13 @@
           <span id="cb-free-label" class="cb-label"></span>
           <span id="cb-status"></span>
         </div>
+        <!-- BizSite page counter -->
+        <div id="page-counter-bar" style="display:none;" class="counter-bar mt-8">
+          <span class="cb-label">Pages needed:</span>
+          <span class="cb-count" id="pb-count">1</span>
+          <span class="cb-label" id="pb-free-label">/ 4 included free</span>
+          <span id="pb-status" class="cb-ok"></span>
+        </div>
         <div class="section-check-grid">
           <div class="check-option" onclick="toggleSection('home',this)"><div class="check-box" id="chk-home"></div>🏠 Home / Hero Banner</div>
           <div class="check-option" onclick="toggleSection('about',this)"><div class="check-box" id="chk-about"></div>👤 About Us</div>
@@ -355,6 +431,18 @@
           <div id="custom-sections-list"></div>
           <button class="btn-add-more" onclick="addCustomSection()">➕ Add a Custom Section</button>
         </div>
+
+        <!-- BizSite: how many pages -->
+        <div id="page-count-wrap" style="display:none;margin-top:20px;">
+          <label style="font-size:13px;font-weight:600;color:var(--text-muted);">How many separate pages do you need?</label>
+          <p class="note-text">BizSite includes up to 4 pages free. Each extra page beyond 4 is +LKR 3,000.</p>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;">
+            <button onclick="changePageCount(-1)" style="width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">−</button>
+            <span id="page-count-display" style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--text);min-width:32px;text-align:center;">4</span>
+            <button onclick="changePageCount(1)" style="width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">+</button>
+            <span id="page-count-label" style="font-size:13px;color:var(--green);font-weight:600;">✓ 4 pages included free</span>
+          </div>
+        </div>
       </div>
       <div id="section-details" class="mt-24"></div>
     </div>
@@ -366,32 +454,48 @@
         <div><h2>Design & Colors</h2><p>Tell us the look and feel you want</p></div>
       </div>
       <div class="field">
-        <label>Your 3 Main Brand Colors <span class="req">*</span></label>
-        <p class="note-text">Click the color box to open the picker, or type a hex code directly.</p>
-        <div class="color-picker-group mt-12">
-          <div class="color-picker-item">
-            <label>Primary Color</label>
-            <div class="color-input-wrap">
-              <input type="color" id="color1" value="#1a1a2e" oninput="updateHex('color1','hex1')">
-              <input type="text" class="color-hex" id="hex1" value="#1A1A2E" oninput="updateColor('hex1','color1')" maxlength="7">
+        <label>Your Brand Colors <span class="req">*</span></label>
+        <p class="note-text">We recommend 3 colors — perfect for any website. You can add more if needed.</p>
+
+        <!-- Logo color match option -->
+        <div class="check-option mt-8" id="logo-color-match-opt" onclick="toggleLogoColorMatch(this)" style="max-width:420px;">
+          <div class="check-box" id="chk-logo-color"></div>
+          🎨 Pick colors based on my logo — I'll let you decide
+        </div>
+        <div class="info-box gold mt-8" id="logo-color-info" style="display:none;">
+          ✅ <strong>Got it</strong> — we'll use your logo's colors as the main guide. You can still pick or change the colors below if you want, or just leave them and we'll decide based on your logo.
+        </div>
+
+        <div id="color-pickers-wrap">
+          <div class="color-picker-group mt-12" id="color-picker-group">
+            <div class="color-picker-item">
+              <label>Primary Color</label>
+              <div class="color-input-wrap">
+                <input type="color" id="color1" value="#1a1a2e" oninput="updateHex('color1','hex1')">
+                <input type="text" class="color-hex" id="hex1" value="#1A1A2E" oninput="updateColor('hex1','color1')" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-item">
+              <label>Secondary Color</label>
+              <div class="color-input-wrap">
+                <input type="color" id="color2" value="#f4a623" oninput="updateHex('color2','hex2')">
+                <input type="text" class="color-hex" id="hex2" value="#F4A623" oninput="updateColor('hex2','color2')" maxlength="7">
+              </div>
+            </div>
+            <div class="color-picker-item">
+              <label>Accent Color</label>
+              <div class="color-input-wrap">
+                <input type="color" id="color3" value="#ffffff" oninput="updateHex('color3','hex3')">
+                <input type="text" class="color-hex" id="hex3" value="#FFFFFF" oninput="updateColor('hex3','color3')" maxlength="7">
+              </div>
             </div>
           </div>
-          <div class="color-picker-item">
-            <label>Secondary Color</label>
-            <div class="color-input-wrap">
-              <input type="color" id="color2" value="#f4a623" oninput="updateHex('color2','hex2')">
-              <input type="text" class="color-hex" id="hex2" value="#F4A623" oninput="updateColor('hex2','color2')" maxlength="7">
-            </div>
-          </div>
-          <div class="color-picker-item">
-            <label>Accent Color</label>
-            <div class="color-input-wrap">
-              <input type="color" id="color3" value="#ffffff" oninput="updateHex('color3','hex3')">
-              <input type="text" class="color-hex" id="hex3" value="#FFFFFF" oninput="updateColor('hex3','color3')" maxlength="7">
-            </div>
-          </div>
+          <!-- Extra colors added dynamically -->
+          <div id="extra-colors-list"></div>
+          <button class="btn-add-more mt-12" onclick="addExtraColor()">➕ Add Another Color</button>
         </div>
       </div>
+
       <div class="field mt-24">
         <label>Any colors you DON'T want?</label>
         <input type="text" id="noColors" placeholder="e.g. Pink, bright orange, neon green" class="mt-8">
@@ -406,9 +510,21 @@
           <div class="radio-option" onclick="selectRadio('style','corporate',this)"><div class="radio-dot"></div>💼 Corporate & Professional</div>
         </div>
       </div>
+
+      <!-- 3 Reference Website fields -->
       <div class="field mt-24">
-        <label>Reference Website (a site you like the look of)</label>
-        <input type="url" id="refSite" placeholder="https://example.com — style inspiration only" class="mt-8">
+        <label>Reference Websites (sites you like the look of)</label>
+        <p class="note-text">Add up to 3 links — we'll study all of them for style ideas.</p>
+        <input type="url" id="refSite1" placeholder="Reference site 1 — https://example.com" class="mt-8">
+        <input type="url" id="refSite2" placeholder="Reference site 2 — https://example.com" class="mt-8">
+        <input type="url" id="refSite3" placeholder="Reference site 3 — https://example.com" class="mt-8">
+      </div>
+
+      <!-- Video embed -->
+      <div class="field mt-24">
+        <label>Do you have a video to embed on your site?</label>
+        <p class="note-text">We can embed one video (YouTube, Facebook, Vimeo etc.) — paste the embed link or embed code below.</p>
+        <textarea id="videoEmbed" placeholder="Paste your video embed link or embed code here...&#10;&#10;Example: https://www.youtube.com/watch?v=XXXXXXX&#10;Or the full &lt;iframe&gt; embed code from YouTube" class="mt-8" style="min-height:80px;"></textarea>
       </div>
     </div>
 
@@ -464,7 +580,7 @@
           <input type="file" id="logoFile" accept="image/*" onchange="handleFileUpload('logoFile','logo-preview',1)">
           <div class="upload-icon">🖼️</div>
           <p><strong>Click to upload your logo</strong></p>
-          <small>PNG, JPG — Max 5MB</small>
+          <small>PNG, JPG — any size accepted</small>
         </div>
         <div class="file-preview" id="logo-preview"></div>
       </div>
@@ -475,9 +591,12 @@
           <input type="file" id="imageFiles" accept="image/*" multiple onchange="handleFileUpload('imageFiles','images-preview',3)">
           <div class="upload-icon">📷</div>
           <p><strong>Click to upload images</strong></p>
-          <small>PNG, JPG — Up to 3 images — Max 5MB each</small>
+          <small>PNG, JPG — up to 3 images — any size accepted</small>
         </div>
         <div class="file-preview" id="images-preview"></div>
+        <div class="info-box green mt-8">
+          📦 <strong>Don't worry about file size.</strong> Upload your photos as they are — straight from your phone or camera is fine. We'll handle resizing and optimizing all images before putting them on your website.
+        </div>
       </div>
     </div>
 
@@ -493,8 +612,11 @@
         <div class="field"><label>YouTube</label><input type="url" id="youtube" placeholder="https://youtube.com/yourchannel"></div>
         <div class="field"><label>TikTok</label><input type="url" id="tiktok" placeholder="https://tiktok.com/@yourhandle"></div>
         <div class="field"><label>WhatsApp Business</label><input type="tel" id="waLink" placeholder="+94 77 123 4567"></div>
-        <div class="field"><label>Other Link</label><input type="url" id="otherLink" placeholder="LinkedIn, Telegram, etc."></div>
       </div>
+      <!-- Extra social links -->
+      <div id="extra-social-list" style="margin-top:12px;"></div>
+      <button class="btn-add-more mt-8" onclick="addSocialLink()">➕ Add Another Social / Link</button>
+      <p class="note-text" style="margin-top:8px;">LinkedIn, Telegram, Pinterest, Threads, Snapchat, website link, etc.</p>
     </div>
 
     <!-- 8. DOMAIN & HOSTING -->
@@ -558,11 +680,16 @@
       </div>
     </div>
 
-  </div>
+    </div><!-- /main-detail-form -->
 
-  <div class="submit-section">
+  <div class="submit-section" id="main-submit-section" style="display:none;">
     <div class="submit-note">
-      <strong>⚠️ Please note:</strong> Future updates after delivery are <strong>not included</strong> and will be charged at <strong>LKR 1,500 per edit</strong>. Domain and hosting costs (if needed) will be quoted separately before any payment is made. By submitting you agree to these terms.
+      <strong>⚠️ Please note:</strong><br>
+      — Future updates after delivery are <strong>not included</strong> and charged at <strong>LKR 1,500 per edit</strong><br>
+      — <strong>QuickSite</strong> includes <strong>1 free revision</strong> &nbsp;|&nbsp; <strong>BizSite</strong> includes <strong>2 free revisions</strong><br>
+      — All revision requests must be submitted in <strong>writing</strong> (WhatsApp or email) — no verbal requests<br>
+      — Domain and hosting costs (if needed) will be quoted separately before any payment<br><br>
+      By submitting this form you agree to these terms.
     </div>
     <button class="btn-submit" onclick="submitForm()">✅ Submit My Website Order</button>
   </div>
@@ -598,10 +725,13 @@
   let selectedPlan = null, selectedAddons = {}, radioSelections = {};
   let selectedSections = [], sectionDescriptions = {};
   let customSectionCount = 0, customSectionLabels = {};
-  const planPrices = { starter:10000, business:20000 };
-  const addonPrices = { content:1500, extrapage:3000 };
-  const FREE_SECTIONS = { starter:5, business:4 };
-  const EXTRA_SEC_PRICE = 1500;
+  const planPrices = { quicksite:10000, bizsite:20000, prosite:35000 };
+  const addonPrices = { content:1500, extrapage:3000, animation:2000 };
+  const FREE_SECTIONS = { quicksite:5, bizsite:4, prosite:0 };
+  const EXTRA_SEC_PRICE  = 1500;
+  const EXTRA_PAGE_PRICE = 3000;
+  const FREE_PAGES       = 4;
+  let   bizPageCount     = 4; // default 4 pages for BizSite
   const builtinLabels = { home:'🏠 Home / Hero Banner', about:'👤 About Us', services:'🛠️ Services / What We Offer', portfolio:'🖼️ Portfolio / Gallery', pricing:'💰 Pricing', testimonials:'⭐ Testimonials', contact:'📞 Contact Us' };
   const getSectionLabel = k => builtinLabels[k] || ('➕ ' + (customSectionLabels[k] || 'Custom Section'));
 
@@ -610,22 +740,65 @@
     selectedPlan = plan;
     document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
     document.getElementById('plan-' + plan).classList.add('selected');
-    document.getElementById('addons-wrap').style.display = plan === 'business' ? 'block' : 'none';
-    if (plan === 'starter') {
-      ['content','extrapage'].forEach(k => { if (selectedAddons[k]) { delete selectedAddons[k]; document.getElementById('addon-'+k)?.classList.remove('selected'); const c = document.getElementById('check-'+k); if(c) c.textContent=''; } });
+
+    const isProSite  = plan === 'prosite';
+    const isBizSite  = plan === 'bizsite';
+    const isQuick    = plan === 'quicksite';
+
+    // Show/hide form sections
+    document.getElementById('prosite-form').style.display      = isProSite ? 'block' : 'none';
+    document.getElementById('main-detail-form').style.display  = isProSite ? 'none'  : 'block';
+    document.getElementById('main-submit-section').style.display = isProSite ? 'none' : 'block';
+
+    // Add-ons
+    document.getElementById('addons-all-wrap').style.display = isProSite ? 'none' : 'block';
+    document.getElementById('addons-wrap').style.display     = isBizSite  ? 'block' : 'none';
+
+    // Clear bizsite-only addons if switching away
+    if (!isBizSite) {
+      ['content','extrapage'].forEach(k => {
+        if (selectedAddons[k]) {
+          delete selectedAddons[k];
+          document.getElementById('addon-'+k)?.classList.remove('selected');
+          const c = document.getElementById('check-'+k); if(c) c.textContent='';
+        }
+      });
     }
-    document.getElementById('section-help-text').textContent = plan === 'starter'
-      ? '⭐ Starter: 5 sections free. Extra sections beyond 5 are +LKR 1,500 each.'
-      : '🚀 Business: Up to 4 sections per page. Extra sections are +LKR 1,500 each.';
+    // Clear animation if prosite
+    if (isProSite && selectedAddons['animation']) {
+      delete selectedAddons['animation'];
+      document.getElementById('addon-animation')?.classList.remove('selected');
+      const c = document.getElementById('check-animation'); if(c) c.textContent='';
+    }
+
+    // Section help text
+    document.getElementById('section-help-text').textContent = isQuick
+      ? 'QuickSite: 5 sections included free. Extra sections beyond 5 are +LKR 1,500 each.'
+      : 'BizSite: Up to 4 sections per page. Extra sections are +LKR 1,500 each.';
+
+    // AI content notices
     const aiSel = radioSelections['content'];
-    document.getElementById('ai-notice-starter').style.display = (plan==='starter' && aiSel==='ai') ? 'block' : 'none';
-    document.getElementById('ai-notice-business').style.display = (plan==='business' && aiSel==='ai') ? 'block' : 'none';
+    document.getElementById('ai-notice-starter').style.display  = (isQuick   && aiSel==='ai') ? 'block' : 'none';
+    document.getElementById('ai-notice-business').style.display = (isBizSite && aiSel==='ai') ? 'block' : 'none';
+
+    // Delivery box
     const db = document.getElementById('deliveryBox');
-    db.innerHTML = plan === 'starter'
-      ? '⏱️ <strong>Delivery:</strong> Starter sites are delivered within <strong>48 hours</strong> from order confirmation.'
-      : '⏱️ <strong>Delivery:</strong> Business sites have a <strong>minimum 72-hour</strong> delivery time. Complex projects may take longer.';
-    db.style.display = 'block';
-    updateSectionCounter(); updatePrice();
+    if (db) {
+      db.innerHTML = isQuick
+        ? '⏱️ <strong>Delivery:</strong> QuickSite is delivered within <strong>48 hours</strong> from order confirmation.'
+        : '⏱️ <strong>Delivery:</strong> BizSite has a <strong>minimum 72-hour</strong> delivery time. Complex projects may take longer.';
+      db.style.display = isProSite ? 'none' : 'block';
+    }
+
+    // Show page count widget only for BizSite
+    const pcw = document.getElementById('page-count-wrap');
+    const pbar = document.getElementById('page-counter-bar');
+    if (pcw) pcw.style.display = isBizSite ? 'block' : 'none';
+    if (pbar) pbar.style.display = isBizSite ? 'flex' : 'none';
+    if (isBizSite) updatePageCounter();
+
+    updateSectionCounter();
+    updatePrice();
   }
 
   // ── ADDON ─────────────────────────────────────────────────────────────────────
@@ -638,9 +811,22 @@
   // ── PRICE ─────────────────────────────────────────────────────────────────────
   function updatePrice() {
     let total=0, lines=[], notes=[];
-    if (selectedPlan) { total+=planPrices[selectedPlan]; lines.push((selectedPlan==='starter'?'⭐ Starter':'🚀 Business')+' — LKR '+planPrices[selectedPlan].toLocaleString()); }
+    if (selectedPlan) {
+      total += planPrices[selectedPlan];
+      const names = {quicksite:'QuickSite', bizsite:'BizSite', prosite:'ProSite (quoted)'};
+      lines.push((names[selectedPlan]||selectedPlan) + ' — LKR ' + planPrices[selectedPlan].toLocaleString() + (selectedPlan==='prosite'?'+':''));
+    }
     if (selectedPlan) { const extra=Math.max(0,selectedSections.length-FREE_SECTIONS[selectedPlan]); if(extra>0){const c=extra*EXTRA_SEC_PRICE;total+=c;lines.push('Extra '+extra+' section'+(extra>1?'s':'')+' — LKR '+c.toLocaleString());} }
-    Object.entries(selectedAddons).forEach(([k,v])=>{total+=v;const n={content:'AI Content',extrapage:'5th Page'};lines.push((n[k]||k)+' — LKR '+v.toLocaleString());});
+    // Extra pages for BizSite
+    if (selectedPlan === 'bizsite') {
+      const extraPages = Math.max(0, bizPageCount - FREE_PAGES);
+      if (extraPages > 0) {
+        const c = extraPages * EXTRA_PAGE_PRICE;
+        total += c;
+        lines.push('Extra ' + extraPages + ' page' + (extraPages>1?'s':'') + ' — LKR ' + c.toLocaleString());
+      }
+    }
+    Object.entries(selectedAddons).forEach(([k,v])=>{total+=v;const n={content:'AI Content',extrapage:'5th Page',animation:'3D Animation'};lines.push((n[k]||k)+' — LKR '+v.toLocaleString());});
     if (radioSelections['domain']==='no') notes.push('+ Domain cost (quoted separately)');
     if (radioSelections['hostingQ']==='no') notes.push('+ Hosting cost (quoted separately)');
     document.getElementById('totalAmount').textContent = total>0?'LKR '+total.toLocaleString():'LKR 0';
@@ -657,8 +843,8 @@
     document.querySelectorAll('[id^="cond-'+group+'-"]').forEach(c=>c.classList.remove('visible'));
     document.getElementById('cond-'+group+'-'+value)?.classList.add('visible');
     if (group==='content') {
-      document.getElementById('ai-notice-starter').style.display=(selectedPlan==='starter'&&value==='ai')?'block':'none';
-      document.getElementById('ai-notice-business').style.display=(selectedPlan==='business'&&value==='ai')?'block':'none';
+      document.getElementById('ai-notice-starter').style.display=(selectedPlan==='quicksite'&&value==='ai')?'block':'none';
+      document.getElementById('ai-notice-business').style.display=(selectedPlan==='bizsite'&&value==='ai')?'block':'none';
     }
     updatePrice();
   }
@@ -714,7 +900,7 @@
   }
 
   // ── SUBMIT ────────────────────────────────────────────────────────────────────
-  function submitForm(){
+  async function submitForm(){
     if(!selectedPlan){alert('Please select a package — Starter or Business.');return;}
     if(!selectedSections.length){alert('Please select at least one section for your website.');return;}
     if(!radioSelections['style']){alert('Please select a website style in Section 4.');return;}
@@ -723,10 +909,236 @@
     const missing=[];
     req.forEach(([id,label])=>{const el=document.getElementById(id);if(!el?.value?.trim()){missing.push(label);if(el)el.style.borderColor='var(--red)';}else if(el)el.style.borderColor='';});
     if(missing.length){alert('Please fill in: '+missing.join(', '));const fid=req.find(([id])=>!document.getElementById(id)?.value?.trim())?.[0];document.getElementById(fid)?.scrollIntoView({behavior:'smooth',block:'center'});return;}
-    document.getElementById('mainForm').style.display='none';
-    document.getElementById('priceSummary').style.display='none';
-    document.getElementById('successScreen').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
+
+    // Save any unsaved section descriptions
+    saveDescriptions();
+
+    // Build section details string
+    const sectionDetailStr = selectedSections.map(k => {
+      const desc = sectionDescriptions[k] || '';
+      return getSectionLabel(k) + (desc ? ':\n' + desc : ': (no details provided)');
+    }).join('\n\n');
+
+    // Build addons string
+    const addonNames = {content:'AI Content Writing (+LKR 1,500)', extrapage:'5th Page (+LKR 3,000)'};
+    const addonStr = Object.keys(selectedAddons).map(k => addonNames[k]||k).join(', ') || 'None';
+
+    // Build estimated total string
+    const totalEl = document.getElementById('totalAmount');
+    const estTotal = totalEl ? totalEl.textContent : 'N/A';
+
+    // Build FormData
+    const fd = new FormData();
+
+    // Package
+    fd.append('package', selectedPlan === 'starter' ? '⭐ Starter — LKR 10,000' : '🚀 Business — LKR 20,000');
+    fd.append('addons', addonStr);
+    fd.append('estimatedTotal', estTotal);
+
+    // All text fields
+    const textFields = ['fullName','businessName','businessType','location','email','whatsapp','businessDesc',
+      'websitePurpose','targetAudience','existingSiteUrl','noColors','tagline','services',
+      'facebook','instagram','youtube','tiktok','waLink',
+      'domainName','domainWanted','hostingProvider','deadline','notes','partialContent','videoEmbed'];
+    textFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) fd.append(id, el.value || '');
+    });
+
+    // Colors — base 3
+    fd.append('colorPrimary',   document.getElementById('hex1')?.value || '');
+    fd.append('colorSecondary', document.getElementById('hex2')?.value || '');
+    fd.append('colorAccent',    document.getElementById('hex3')?.value || '');
+    // Extra colors
+    const extraColorRows = document.querySelectorAll('[id^="extra-color-row-"]');
+    const extraColors = [];
+    extraColorRows.forEach(row => {
+      const hexInput = row.querySelector('[id^="extraHex"]');
+      if (hexInput?.value) extraColors.push(hexInput.value);
+    });
+    fd.append('extraColors', extraColors.join(', '));
+    fd.append('logoColorMatch', logoColorMatch ? 'Yes — pick colors from logo' : 'No');
+
+    // Reference sites
+    fd.append('refSite1', document.getElementById('refSite1')?.value || '');
+    fd.append('refSite2', document.getElementById('refSite2')?.value || '');
+    fd.append('refSite3', document.getElementById('refSite3')?.value || '');
+
+    // Extra social links
+    const extraSocials = [];
+    document.querySelectorAll('[id^="social-row-"]').forEach(row => {
+      const platform = row.querySelector('[id^="social-platform-"]')?.value || '';
+      const url = row.querySelector('[id^="social-url-"]')?.value || '';
+      if (url.trim()) extraSocials.push(platform + ': ' + url);
+    });
+    fd.append('extraSocialLinks', extraSocials.join('\n'));
+
+    // Radios
+    fd.append('style',         radioSelections['style'] || '');
+    fd.append('contentReady',  radioSelections['content'] || '');
+    fd.append('domainStatus',  radioSelections['domain'] || '');
+    fd.append('hostingStatus', radioSelections['hostingQ'] || '');
+
+    // Sections
+    fd.append('sections',      selectedSections.map(k => getSectionLabel(k)).join(', '));
+    fd.append('sectionDetails', sectionDetailStr);
+
+    // Images
+    const logoInput   = document.getElementById('logoFile');
+    const imageInput  = document.getElementById('imageFiles');
+    if (logoInput?.files?.length) {
+      for (let f of logoInput.files) fd.append('logo[]', f);
+    }
+    if (imageInput?.files?.length) {
+      for (let f of imageInput.files) fd.append('siteImages[]', f);
+    }
+
+    // Show loading state
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = '⏳ Sending your order...';
+    btn.disabled = true;
+
+    try {
+      const resp = await fetch('submit.php', { method: 'POST', body: fd });
+      const result = await resp.json();
+      if (result.success) {
+        document.getElementById('mainForm').style.display='none';
+        document.getElementById('priceSummary').style.display='none';
+        document.getElementById('successScreen').style.display='block';
+        window.scrollTo({top:0,behavior:'smooth'});
+      } else {
+        throw new Error('Server error');
+      }
+    } catch(e) {
+      btn.textContent = '✅ Submit My Website Order';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
+    }
+  }
+
+  // ── PAGE COUNT (BizSite) ──────────────────────────────────────────────────────
+  function changePageCount(delta) {
+    bizPageCount = Math.max(1, bizPageCount + delta);
+    updatePageCounter();
+    updatePrice();
+  }
+  function updatePageCounter() {
+    const display = document.getElementById('page-count-display');
+    const label   = document.getElementById('page-count-label');
+    const pbCount = document.getElementById('pb-count');
+    if (display) display.textContent = bizPageCount;
+    if (pbCount)  pbCount.textContent = bizPageCount;
+    const extra = Math.max(0, bizPageCount - FREE_PAGES);
+    if (label) {
+      if (extra === 0) {
+        label.style.color = 'var(--green)';
+        label.textContent = '✓ ' + bizPageCount + (bizPageCount===1?' page':' pages') + ' — included free';
+      } else {
+        label.style.color = 'var(--red)';
+        label.textContent = '+' + extra + ' extra page' + (extra>1?'s':'') + ' = LKR ' + (extra * EXTRA_PAGE_PRICE).toLocaleString();
+      }
+    }
+    const pbStatus = document.getElementById('pb-status');
+    if (pbStatus) {
+      if (extra === 0) { pbStatus.className='cb-ok'; pbStatus.textContent='✓ Within included limit'; }
+      else { pbStatus.className='cb-charge'; pbStatus.textContent='+'+extra+' extra = LKR '+(extra*EXTRA_PAGE_PRICE).toLocaleString(); }
+    }
+  }
+
+  // ── PROSITE SUBMIT ────────────────────────────────────────────────────────────
+  async function submitProSite() {
+    const req = [['pro-fullName','Full Name'],['pro-businessName','Business Name'],['pro-whatsapp','WhatsApp Number'],['pro-email','Email']];
+    const missing = [];
+    req.forEach(([id,label]) => {
+      const el = document.getElementById(id);
+      if (!el?.value?.trim()) { missing.push(label); if(el) el.style.borderColor='var(--red)'; }
+      else if(el) el.style.borderColor='';
+    });
+    if (missing.length) { alert('Please fill in: ' + missing.join(', ')); return; }
+
+    const fd = new FormData();
+    fd.append('package',      'ProSite — LKR 35,000+');
+    fd.append('fullName',     document.getElementById('pro-fullName').value);
+    fd.append('businessName', document.getElementById('pro-businessName').value);
+    fd.append('whatsapp',     document.getElementById('pro-whatsapp').value);
+    fd.append('email',        document.getElementById('pro-email').value);
+    fd.append('notes',        document.getElementById('pro-notes').value);
+    fd.append('meetType',     radioSelections['meetType'] || 'Not specified');
+    fd.append('estimatedTotal', 'LKR 35,000+ (to be quoted)');
+    fd.append('isProSite',    'true');
+
+    const btn = document.querySelector('#prosite-form .btn-submit');
+    btn.textContent = '⏳ Sending...'; btn.disabled = true;
+
+    try {
+      const resp = await fetch('submit.php', { method:'POST', body:fd });
+      const result = await resp.json();
+      if (result.success) {
+        document.getElementById('mainForm').style.display='none';
+        document.getElementById('priceSummary').style.display='none';
+        document.getElementById('successScreen').style.display='block';
+        document.querySelector('.success-screen p').innerHTML =
+          "We've received your details. We'll contact you on <strong>WhatsApp within 24 hours</strong> to arrange your meeting and discuss your project.";
+        window.scrollTo({top:0,behavior:'smooth'});
+      } else { throw new Error(); }
+    } catch(e) {
+      btn.textContent = '📩 Send My Details — We\'ll Be in Touch';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or contact us directly on WhatsApp.');
+    }
+  }
+
+  // ── EXTRA COLORS ──────────────────────────────────────────────────────────────
+  let extraColorCount = 0;
+  function addExtraColor() {
+    const id = 'extraColor' + extraColorCount;
+    const hexId = 'extraHex' + extraColorCount;
+    extraColorCount++;
+    const wrap = document.getElementById('extra-colors-list');
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;margin-top:10px;';
+    row.id = 'extra-color-row-' + id;
+    row.innerHTML = `
+      <div class="color-input-wrap" style="flex:1;">
+        <input type="color" id="${id}" value="#000000" oninput="updateHex('${id}','${hexId}')">
+        <input type="text" class="color-hex" id="${hexId}" value="#000000" oninput="updateColor('${hexId}','${id}')" maxlength="7">
+        <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">Extra Color ${extraColorCount}</span>
+      </div>
+      <button class="btn-remove-custom" onclick="document.getElementById('extra-color-row-${id}').remove()">✕</button>`;
+    wrap.appendChild(row);
+  }
+
+  // ── LOGO COLOR MATCH ──────────────────────────────────────────────────────────
+  let logoColorMatch = false;
+  function toggleLogoColorMatch(el) {
+    logoColorMatch = !logoColorMatch;
+    const chk = document.getElementById('chk-logo-color');
+    const info = document.getElementById('logo-color-info');
+    if (logoColorMatch) {
+      el.classList.add('selected'); chk.textContent = '✓';
+      info.style.display = 'block';
+    } else {
+      el.classList.remove('selected'); chk.textContent = '';
+      info.style.display = 'none';
+    }
+  }
+
+  // ── EXTRA SOCIAL LINKS ────────────────────────────────────────────────────────
+  let extraSocialCount = 0;
+  const socialPlatforms = ['LinkedIn','Telegram','Pinterest','Threads','Snapchat','Twitter / X','Discord','GitHub','Behance','Dribbble','Website','Other'];
+  function addSocialLink() {
+    const idx = extraSocialCount++;
+    const wrap = document.getElementById('extra-social-list');
+    const row = document.createElement('div');
+    row.className = 'custom-section-row';
+    row.id = 'social-row-' + idx;
+    row.innerHTML = `
+      <select id="social-platform-${idx}" style="width:150px;flex-shrink:0;margin-top:0;">
+        ${socialPlatforms.map(p=>`<option value="${p}">${p}</option>`).join('')}
+      </select>
+      <input type="url" id="social-url-${idx}" placeholder="https://" style="flex:1;margin-top:0;">
+      <button class="btn-remove-custom" onclick="document.getElementById('social-row-${idx}').remove()">✕</button>`;
+    wrap.appendChild(row);
   }
 
   updatePrice();
